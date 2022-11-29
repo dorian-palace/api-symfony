@@ -15,6 +15,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+
+    }
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
