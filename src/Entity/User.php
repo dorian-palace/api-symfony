@@ -8,9 +8,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups'=>['read:collection']],
+    denormalizationContext: ['groups' =>['write']],
+)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -39,8 +43,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:collection'])]
     private ?string $firstname = null;
-
+    
+    #[Groups(['read:collection'])]
     #[ORM\Column(length: 255)]
     private ?string $lastname = null;
 
